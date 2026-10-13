@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: ${MYSQL_TEST_URL:jdbc:mysql://127.0.0.1:3306/learnreserve_test?connectionTimeZone=UTC&forceConnectionTimeZoneToSession=true}
+    username: ${MYSQL_TEST_USERNAME:learnreserve}
+    password: ${MYSQL_TEST_PASSWORD:test-password}

@@ -1,0 +1,68 @@
+@baseUrl = http://localhost:8080
+@adminEmail = admin@learnreserve.local
+@adminPassword = DemoAdmin!2026
+@learnerEmail = learner@learnreserve.local
+@learnerPassword = DemoLearner!2026
+@resourceId = 1
+@bookingId = 1
+# Replace dates with future timestamps inside a published window.
+@startsAt = 2030-01-02T10:00:00Z
+@endsAt = 2030-01-02T11:00:00Z
+
+### Health
+GET {{baseUrl}}/actuator/health
+
+### Discover resources
+GET {{baseUrl}}/api/v1/resources?type=STUDY_ROOM&page=0&size=20
+
+### Register a learner (use a new email for repeated runs)
+POST {{baseUrl}}/api/v1/auth/register
+Content-Type: application/json
+
+{"name":"Reviewer","email":"reviewer@example.com","password":"ReviewerPassword!2026"}
+
+### Current account
+GET {{baseUrl}}/api/v1/auth/me
+Authorization: Basic {{learnerEmail}} {{learnerPassword}}
+
+### Create resource (admin)
+POST {{baseUrl}}/api/v1/resources
+Authorization: Basic {{adminEmail}} {{adminPassword}}
+Content-Type: application/json
+
+{"name":"Interview Room","description":"A quiet space for interview practice","type":"STUDY_ROOM","location":"Library, floor 1"}
+
+### Publish availability (admin)
+POST {{baseUrl}}/api/v1/resources/{{resourceId}}/availability
+Authorization: Basic {{adminEmail}} {{adminPassword}}
+Content-Type: application/json
+
+{"startsAt":"{{startsAt}}","endsAt":"{{endsAt}}"}
+
+### Discover free intervals
+GET {{baseUrl}}/api/v1/resources/{{resourceId}}/availability?from={{startsAt}}&to={{endsAt}}
+
+### Book; repeat to receive 409
+POST {{baseUrl}}/api/v1/bookings
+Authorization: Basic {{learnerEmail}} {{learnerPassword}}
+Content-Type: application/json
+
+{"resourceId":{{resourceId}},"startsAt":"{{startsAt}}","endsAt":"{{endsAt}}"}
+
+### My history
+GET {{baseUrl}}/api/v1/bookings?page=0&size=20
+Authorization: Basic {{learnerEmail}} {{learnerPassword}}
+
+### Cancel; repeating this is idempotent
+POST {{baseUrl}}/api/v1/bookings/{{bookingId}}/cancel
+Authorization: Basic {{learnerEmail}} {{learnerPassword}}
+Content-Type: application/json
+
+{}
+
+### Deactivate (admin)
+PATCH {{baseUrl}}/api/v1/resources/{{resourceId}}/active
+Authorization: Basic {{adminEmail}} {{adminPassword}}
+Content-Type: application/json
+
+{"active":false}

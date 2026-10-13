@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:learnreserve;MODE=MySQL;DB_CLOSE_DELAY=-1;LOCK_TIMEOUT=10000
+    username: sa
+    password: ""
+app:
+  admin:
+    email: admin@learnreserve.local
+    password: DemoAdmin!2026
