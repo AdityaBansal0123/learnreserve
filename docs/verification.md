@@ -30,6 +30,8 @@ $env:MYSQL_TEST_URL = 'jdbc:mysql://127.0.0.1:3307/learnreserve_test?connectionT
 
 Reports are generated in `target/surefire-reports/` and `target/site/jacoco/`. Re-run `verify` to regenerate them; build outputs are intentionally excluded from Git.
 
-Docker Compose and GitHub Actions are configured but were **not executed here**: Docker is not installed in this environment, and the repository is being prepared locally for later publication. The runnable JAR, live local demo, and MySQL tests were executed directly.
+The repository is published at [AdityaBansal0123/learnreserve](https://github.com/AdityaBansal0123/learnreserve). The H2 and MySQL test steps also passed on GitHub's Ubuntu runners in [the initial CI run](https://github.com/AdityaBansal0123/learnreserve/actions/runs/38447109153). The MySQL job runs against a MySQL 8.4.11 service container, and both jobs upload their test and coverage reports as workflow artifacts.
+
+The full Docker Compose application stack has **not been executed locally**, because Docker is not installed in this environment. The runnable JAR, live local demo, and MySQL tests were executed directly; CI additionally verifies the backend against containerized MySQL.
 
 The managed Flyway dependency emits an advisory about its stated tested MySQL version; the actual Flyway migration, Hibernate schema validation, and all tests passed against MySQL 8.4.11. Mockito's Spring test initialization also emits a Java-agent advisory under Java 21. These warnings do not skip or invalidate the tests.

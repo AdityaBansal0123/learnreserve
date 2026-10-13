@@ -1,5 +1,7 @@
 # LearnReserve
 
+[![Build and verify](https://github.com/AdityaBansal0123/learnreserve/actions/workflows/ci.yml/badge.svg)](https://github.com/AdityaBansal0123/learnreserve/actions/workflows/ci.yml)
+
 A Java backend for discovering learning resources, publishing availability, and making reservations that remain consistent under concurrent requests.
 
 **Java 21 · Spring Boot 3.5 · Spring Data JPA / Hibernate · MySQL 8.4 · Flyway · Maven · OpenAPI**
